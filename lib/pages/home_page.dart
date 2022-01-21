@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_codigo4_weather/services/api_services.dart';
 import 'package:flutter_codigo4_weather/ui/general/colors.dart';
 import 'package:flutter_codigo4_weather/ui/widgets/general_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,6 +12,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final TextEditingController _searchEditingController = TextEditingController();
+  final APIService _apiService = APIService();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  _getDataWeather(){
+    String search = _searchEditingController.text;
+    _apiService.getDataWeather(search).then((value) {
+      print(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
@@ -69,6 +87,7 @@ class _HomePageState extends State<HomePage> {
               ),
               divider20,
               TextField(
+                controller: _searchEditingController,
                 cursorColor: COLOR_PRIMARY,
                 textAlign: TextAlign.start,
                 style: const TextStyle(
@@ -106,7 +125,9 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    _getDataWeather();
+                  },
                   child: const Text(
                     "Search",
                     style: TextStyle(fontSize: 16.0),

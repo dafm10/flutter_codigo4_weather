@@ -6,6 +6,21 @@ import 'package:flutter_codigo4_weather/models/weather_model.dart';
 import 'package:flutter_codigo4_weather/models/wind_model.dart';
 
 class GeneralModel {
+
+  Coord coord;
+  List<Weather> weather;
+  String base;
+  Main main;
+  int visibility;
+  Wind wind;
+  Clouds clouds;
+  int dt;
+  Sys sys;
+  int timezone;
+  int id;
+  String name;
+  int cod;
+
   GeneralModel({
     required this.coord,
     required this.weather,
@@ -21,20 +36,6 @@ class GeneralModel {
     required this.name,
     required this.cod,
   });
-
-  Coord coord;
-  List<Weather> weather;
-  String base;
-  Main main;
-  int visibility;
-  Wind wind;
-  Clouds clouds;
-  int dt;
-  Sys sys;
-  int timezone;
-  int id;
-  String name;
-  int cod;
 
   factory GeneralModel.fromJson(Map<String, dynamic> json) => GeneralModel(
     coord: Coord.fromJson(json["coord"]),
