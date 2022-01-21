@@ -15,6 +15,8 @@ class _HomePageState extends State<HomePage> {
 
   final TextEditingController _searchEditingController = TextEditingController();
   final APIService _apiService = APIService();
+  String city = "";
+  String country = "";
 
   @override
   void initState() {
@@ -25,7 +27,13 @@ class _HomePageState extends State<HomePage> {
   _getDataWeather(){
     String search = _searchEditingController.text;
     _apiService.getDataWeather(search).then((value) {
-      print(value);
+      if(value != null){
+        city = value.name;
+        country = value.sys.country;
+        setState(() {
+
+        });
+      }
     });
   }
 
@@ -83,7 +91,7 @@ class _HomePageState extends State<HomePage> {
               ),
               divider20,
               Text(
-                "London, UK",
+                "$city, $country",
               ),
               divider20,
               TextField(
