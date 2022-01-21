@@ -10,8 +10,6 @@ class APIService {
     String path = "$pathProduction/weather?q=$city&appid=$apiKey";
     Uri _uri = Uri.parse(path);
     http.Response response = await http.get(_uri);
-    print(response.statusCode);
-    print(response.body);
     if(response.statusCode == 200){
       Map<String, dynamic> myMap = json.decode(response.body);
       GeneralModel generalModel = GeneralModel.fromJson(myMap);
