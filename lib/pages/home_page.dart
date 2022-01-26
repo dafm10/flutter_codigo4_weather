@@ -22,21 +22,50 @@ class _HomePageState extends State<HomePage> {
   bool isLoading = false;
   double latitud = 0;
   double longitud = 0;
+  int indexSelected = -1;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _getDataWeatherLocation();
   }
 
   _getDataWeatherLocation() async {
-    Position _position = await Geolocator.getCurrentPosition(
+/*    Position _position = await Geolocator.getCurrentPosition(
       // la precisión que va a tener va a ser alta: high, medium, best, low, etc
       desiredAccuracy: LocationAccuracy.high,
     );
     latitud = _position.latitude;
     longitud = _position.longitude;
-    print(_position);
+    print(_position);*/
+  Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((position) {
+    _apiService.getDataWeatherLocation(position).then((value) {
+      if(value != null){
+        city = value.name;
+        country = value.sys.country;
+        temp = (value.main.temp - 273.15).toStringAsFixed(0);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              "Hubo un error, por favor inténtalo nuevamente.",
+            ),
+            backgroundColor: Colors.redAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+      // cuando se tiene los valores, isLoading pasa a false
+      isLoading = false;
+      setState(() {
+
+      });
+    });
+  });
   }
 
   _getDataWeather() {
@@ -84,6 +113,10 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
+              isLoading = true;
+              setState(() {
+
+              });
               _getDataWeatherLocation();
             },
             icon: Icon(Icons.location_on),
@@ -195,13 +228,17 @@ class _HomePageState extends State<HomePage> {
                         return GestureDetector(
                           onTap: () {
                             print(index);
+                            indexSelected = index;
+                            setState(() {
+
+                            });
                           },
                           child: Container(
                             margin:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             width: _width * 0.205,
                             decoration: BoxDecoration(
-                              color: Color(0xff363940),
+                              color: indexSelected == index ? COLOR_SECONDARY : Color(0xff363940) ,
                               borderRadius: BorderRadius.circular(60.0),
                               boxShadow: [
                                 BoxShadow(
